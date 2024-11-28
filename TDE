@@ -1,0 +1,543 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Aluno {
+    int matricula;
+    char nome[50];
+    char curso[30];
+    int idade;
+};
+
+void incluirAluno(FILE *file) {
+    struct Aluno aluno;
+    printf("Digite a matrícula: ");
+    scanf("%d", &aluno.matricula);
+    getchar(); // Limpar o buffer do teclado
+    printf("Digite o nome: ");
+    fgets(aluno.nome, 50, stdin);
+    aluno.nome[strcspn(aluno.nome, "\n")] = '\0'; // Remover o \n
+    printf("Digite o curso: ");
+    fgets(aluno.curso, 30, stdin);
+    aluno.curso[strcspn(aluno.curso, "\n")] = '\0';
+    printf("Digite a idade: ");
+    scanf("%d", &aluno.idade);
+
+    fseek(file, 0, SEEK_END);  // Move para o final do arquivo
+    fwrite(&aluno, sizeof(struct Aluno), 1, file);
+    printf("Aluno cadastrado com sucesso!\n");
+}
+
+void listarAlunos(FILE *file) {
+    struct Aluno aluno;
+    rewind(file);  // Volta para o início do arquivo
+    while(fread(&aluno, sizeof(struct Aluno), 1, file)) {
+        printf("Matrícula: %d\n", aluno.matricula);
+        printf("Nome: %s\n", aluno.nome);
+        printf("Curso: %s\n", aluno.curso);
+        printf("Idade: %d\n\n", aluno.idade);
+    }
+}
+
+int main() {
+    FILE *file = fopen("alunos.dat", "ab+");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    int opcao;
+    do {
+        printf("\nMenu de opções:\n");
+        printf("1. Incluir aluno\n");
+        printf("2. Listar alunos\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar(); // Limpar o buffer do teclado
+
+        switch(opcao) {
+            case 1:
+                incluirAluno(file);
+                break;
+            case 2:
+                listarAlunos(file);
+                break;
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+    } while(opcao != 0);
+
+    fclose(file);
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Funcionario {
+    int id;
+    char nome[50];
+    char cargo[30];
+    int salario;
+};
+
+void incluirFuncionario(FILE *file) {
+    struct Funcionario funcionario;
+    printf("Digite o ID: ");
+    scanf("%d", &funcionario.id);
+    getchar();  // Limpar o buffer do teclado
+    printf("Digite o nome: ");
+    fgets(funcionario.nome, 50, stdin);
+    funcionario.nome[strcspn(funcionario.nome, "\n")] = '\0';
+    printf("Digite o cargo: ");
+    fgets(funcionario.cargo, 30, stdin);
+    funcionario.cargo[strcspn(funcionario.cargo, "\n")] = '\0';
+    printf("Digite o salário: ");
+    scanf("%d", &funcionario.salario);
+
+    fseek(file, 0, SEEK_END);  // Move para o final do arquivo
+    fwrite(&funcionario, sizeof(struct Funcionario), 1, file);
+    printf("Funcionário cadastrado com sucesso!\n");
+}
+
+void listarFuncionarios(FILE *file) {
+    struct Funcionario funcionario;
+    rewind(file);  // Volta para o início do arquivo
+    while(fread(&funcionario, sizeof(struct Funcionario), 1, file)) {
+        printf("ID: %d\n", funcionario.id);
+        printf("Nome: %s\n", funcionario.nome);
+        printf("Cargo: %s\n", funcionario.cargo);
+        printf("Salário: R$ %d\n\n", funcionario.salario);
+    }
+}
+
+int main() {
+    FILE *file = fopen("funcionarios.dat", "ab+");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    int opcao;
+    do {
+        printf("\nMenu de opções:\n");
+        printf("1. Cadastrar funcionário\n");
+        printf("2. Listar funcionários\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar(); // Limpar o buffer do teclado
+
+        switch(opcao) {
+            case 1:
+                incluirFuncionario(file);
+                break;
+            case 2:
+                listarFuncionarios(file);
+                break;
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+    } while(opcao != 0);
+
+    fclose(file);
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Livro {
+    int codigo;
+    char titulo[50];
+    char autor[50];
+    int ano;
+};
+
+void incluirLivro(FILE *file) {
+    struct Livro livro;
+    printf("Digite o código do livro: ");
+    scanf("%d", &livro.codigo);
+    getchar();  // Limpar o buffer do teclado
+    printf("Digite o título: ");
+    fgets(livro.titulo, 50, stdin);
+    livro.titulo[strcspn(livro.titulo, "\n")] = '\0';
+    printf("Digite o autor: ");
+    fgets(livro.autor, 50, stdin);
+    livro.autor[strcspn(livro.autor, "\n")] = '\0';
+    printf("Digite o ano de publicação: ");
+    scanf("%d", &livro.ano);
+
+    fseek(file, 0, SEEK_END);  // Move para o final do arquivo
+    fwrite(&livro, sizeof(struct Livro), 1, file);
+    printf("Livro cadastrado com sucesso!\n");
+}
+
+void listarLivros(FILE *file) {
+    struct Livro livro;
+    rewind(file);  // Volta para o início do arquivo
+    while(fread(&livro, sizeof(struct Livro), 1, file)) {
+        printf("Código: %d\n", livro.codigo);
+        printf("Título: %s\n", livro.titulo);
+        printf("Autor: %s\n", livro.autor);
+        printf("Ano: %d\n\n", livro.ano);
+    }
+}
+
+int main() {
+    FILE *file = fopen("livros.dat", "ab+");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    int opcao;
+    do {
+        printf("\nMenu de opções:\n");
+        printf("1. Adicionar livro\n");
+        printf("2. Listar livros\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar(); // Limpar o buffer do teclado
+
+        switch(opcao) {
+            case 1:
+                incluirLivro(file);
+                break;
+            case 2:
+                listarLivros(file);
+                break;
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+    } while(opcao != 0);
+
+    fclose(file);
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Veiculo {
+    int id;
+    char modelo[50];
+    char placa[10];
+    int ano;
+};
+
+void incluirVeiculo(FILE *file) {
+    struct Veiculo veiculo;
+    printf("Digite o ID do veículo: ");
+    scanf("%d", &veiculo.id);
+    getchar();  // Limpar o buffer do teclado
+    printf("Digite o modelo do veículo: ");
+    fgets(veiculo.modelo, 50, stdin);
+    veiculo.modelo[strcspn(veiculo.modelo, "\n")] = '\0';
+    printf("Digite a placa do veículo: ");
+    fgets(veiculo.placa, 10, stdin);
+    veiculo.placa[strcspn(veiculo.placa, "\n")] = '\0';
+    printf("Digite o ano de fabricação: ");
+    scanf("%d", &veiculo.ano);
+
+    fseek(file, 0, SEEK_END);  // Move para o final do arquivo
+    fwrite(&veiculo, sizeof(struct Veiculo), 1, file);
+    printf("Veículo cadastrado com sucesso!\n");
+}
+
+void listarVeiculos(FILE *file) {
+    struct Veiculo veiculo;
+    rewind(file);  // Volta para o início do arquivo
+    while(fread(&veiculo, sizeof(struct Veiculo), 1, file)) {
+        printf("ID: %d\n", veiculo.id);
+        printf("Modelo: %s\n", veiculo.modelo);
+        printf("Placa: %s\n", veiculo.placa);
+        printf("Ano: %d\n\n", veiculo.ano);
+    }
+}
+
+void consultarVeiculoPorPlaca(FILE *file, const char *placa) {
+    struct Veiculo veiculo;
+    rewind(file);  // Volta para o início do arquivo
+    while(fread(&veiculo, sizeof(struct Veiculo), 1, file)) {
+        if (strcmp(veiculo.placa, placa) == 0) {
+            printf("Veículo encontrado:\n");
+            printf("ID: %d\n", veiculo.id);
+            printf("Modelo: %s\n", veiculo.modelo);
+            printf("Placa: %s\n", veiculo.placa);
+            printf("Ano: %d\n", veiculo.ano);
+            return;
+        }
+    }
+    printf("Veículo não encontrado!\n");
+}
+
+int main() {
+    FILE *file = fopen("veiculos.dat", "ab+");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    int opcao;
+    do {
+        printf("\nMenu de opções:\n");
+        printf("1. Adicionar veículo\n");
+        printf("2. Listar veículos\n");
+        printf("3. Consultar veículo por placa\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar();  // Limpar o buffer do teclado
+
+        switch(opcao) {
+            case 1:
+                incluirVeiculo(file);
+                break;
+            case 2:
+                listarVeiculos(file);
+                break;
+            case 3:
+                {
+                    char placa[10];
+                    printf("Digite a placa do veículo: ");
+                    fgets(placa, 10, stdin);
+                    placa[strcspn(placa, "\n")] = '\0';  // Remover o \n
+                    consultarVeiculoPorPlaca(file, placa);
+                    break;
+                }
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+    } while(opcao != 0);
+
+    fclose(file);
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Filme {
+    int id;
+    char titulo[50];
+    char genero[20];
+    int ano;
+};
+
+void incluirFilme(FILE *file) {
+    struct Filme filme;
+    printf("Digite o ID do filme: ");
+    scanf("%d", &filme.id);
+    getchar();  // Limpar o buffer do teclado
+    printf("Digite o título do filme: ");
+    fgets(filme.titulo, 50, stdin);
+    filme.titulo[strcspn(filme.titulo, "\n")] = '\0';
+    printf("Digite o gênero do filme: ");
+    fgets(filme.genero, 20, stdin);
+    filme.genero[strcspn(filme.genero, "\n")] = '\0';
+    printf("Digite o ano de lançamento: ");
+    scanf("%d", &filme.ano);
+
+    fseek(file, 0, SEEK_END);  // Move para o final do arquivo
+    fwrite(&filme, sizeof(struct Filme), 1, file);
+    printf("Filme cadastrado com sucesso!\n");
+}
+
+void listarFilmes(FILE *file) {
+    struct Filme filme;
+    rewind(file);  // Volta para o início do arquivo
+    while(fread(&filme, sizeof(struct Filme), 1, file)) {
+        printf("ID: %d\n", filme.id);
+        printf("Título: %s\n", filme.titulo);
+        printf("Gênero: %s\n", filme.genero);
+        printf("Ano: %d\n\n", filme.ano);
+    }
+}
+
+void consultarFilmePorId(FILE *file, int id) {
+    struct Filme filme;
+    rewind(file);  // Volta para o início do arquivo
+    while(fread(&filme, sizeof(struct Filme), 1, file)) {
+        if (filme.id == id) {
+            printf("Filme encontrado:\n");
+            printf("ID: %d\n", filme.id);
+            printf("Título: %s\n", filme.titulo);
+            printf("Gênero: %s\n", filme.genero);
+            printf("Ano: %d\n", filme.ano);
+            return;
+        }
+    }
+    printf("Filme não encontrado!\n");
+}
+
+int main() {
+    FILE *file = fopen("filmes.dat", "ab+");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    int opcao;
+    do {
+        printf("\nMenu de opções:\n");
+        printf("1. Adicionar filme\n");
+        printf("2. Listar filmes\n");
+        printf("3. Consultar filme por ID\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar();  // Limpar o buffer do teclado
+
+        switch(opcao) {
+            case 1:
+                incluirFilme(file);
+                break;
+            case 2:
+                listarFilmes(file);
+                break;
+            case 3:
+                {
+                    int id;
+                    printf("Digite o ID do filme: ");
+                    scanf("%d", &id);
+                    consultarFilmePorId(file, id);
+                    break;
+                }
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+    } while(opcao != 0);
+
+    fclose(file);
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Cidade {
+    int codigo;
+    char nome[50];
+    char estado[30];
+    int populacao;
+};
+
+void incluirCidade(FILE *file) {
+    struct Cidade cidade;
+    printf("Digite o código da cidade: ");
+    scanf("%d", &cidade.codigo);
+    getchar();  // Limpar o buffer do teclado
+    printf("Digite o nome da cidade: ");
+    fgets(cidade.nome, 50, stdin);
+    cidade.nome[strcspn(cidade.nome, "\n")] = '\0';
+    printf("Digite o estado da cidade: ");
+    fgets(cidade.estado, 30, stdin);
+    cidade.estado[strcspn(cidade.estado, "\n")] = '\0';
+    printf("Digite a população da cidade: ");
+    scanf("%d", &cidade.populacao);
+
+    fseek(file, 0, SEEK_END);  // Move para o final do arquivo
+    fwrite(&cidade, sizeof(struct Cidade), 1, file);
+    printf("Cidade cadastrada com sucesso!\n");
+}
+
+void listarCidades(FILE *file) {
+    struct Cidade cidade;
+    rewind(file);  // Volta para o início do arquivo
+    while(fread(&cidade, sizeof(struct Cidade), 1, file)) {
+        printf("Código: %d\n", cidade.codigo);
+        printf("Nome: %s\n", cidade.nome);
+        printf("Estado: %s\n", cidade.estado);
+        printf("População: %d\n\n", cidade.populacao);
+    }
+}
+
+void consultarCidadePorCodigo(FILE *file, int codigo) {
+    struct Cidade cidade;
+    rewind(file);  // Volta para o início do arquivo
+    while(fread(&cidade, sizeof(struct Cidade), 1, file)) {
+        if (cidade.codigo == codigo) {
+            printf("Cidade encontrada:\n");
+            printf("Código: %d\n", cidade.codigo);
+            printf("Nome: %s\n", cidade.nome);
+            printf("Estado: %s\n", cidade.estado);
+            printf("População: %d\n", cidade.populacao);
+            return;
+        }
+    }
+    printf("Cidade não encontrada!\n");
+}
+
+int main() {
+    FILE *file = fopen("cidades.dat", "ab+");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    int opcao;
+    do {
+        printf("\nMenu de opções:\n");
+        printf("1. Incluir cidade\n");
+        printf("2. Listar cidades\n");
+        printf("3. Consultar cidade por código\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar();  // Limpar o buffer do teclado
+
+        switch(opcao) {
+            case 1:
+                incluirCidade(file);
+                break;
+            case 2:
+                listarCidades(file);
+                break;
+            case 3:
+                {
+                    int codigo;
+                    printf("Digite o código da cidade: ");
+                    scanf("%d", &codigo);
+                    consultarCidadePorCodigo(file, codigo);
+                    break;
+                }
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+    } while(opcao != 0);
+
+    fclose(file);
+    return 0;
+}
+
